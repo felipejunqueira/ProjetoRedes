@@ -10,11 +10,11 @@ Desenvolvido para a disciplina de **Redes de Computadores** na **Universidade Fe
 
 ## 🚀 Funcionalidades
 
-- **Suporte IPv6 Nativo:** Inicialização de socket `AF_INET6` com escuta em `in6addr_any`.
+- **Suporte IPv6 Nativo:** Inicialização de socket `AF_INET6` com escuta em `in6addr_any` (dual-stack IPv4/IPv6).
 - **Parser HTTP Modular:** Módulo `httpParser` para parsing de cabeçalhos de requisição e determinação de métodos.
 - **Suporte a Métodos HTTP:**
   - `GET`: Entrega de arquivos estáticos (`index.html`, etc.) com cabeçalhos apropriados.
-  - `POST`: Leitura de corpo de requisição e processamento de submissão de formulários.
+  - `POST`: Leitura de corpo de requisição e processamento de submissão de formulários com retorno em JSON.
 - **Filosofia Unix / POSIX:** Chamadas diretas de sistema (`socket`, `bind`, `listen`, `accept`, `send`, `recv`, `close`).
 
 ---
@@ -23,12 +23,12 @@ Desenvolvido para a disciplina de **Redes de Computadores** na **Universidade Fe
 
 ```text
 ProjetoRedes/
-├── servidor.c         # Ponto de entrada do servidor, loop de conexões e roteamento
-├── httpParser.c       # Implementação do parser de requisições HTTP/1.1
-├── httpParser.h       # Definições de estruturas de requisição e assinaturas
+├── servidor.c         # Ponto de entrada do servidor, loop de conexões e sockets
+├── httpParser.c       # Implementação do parser e tratamento de GET/POST
+├── httpParser.h       # Declarações de assinaturas das funções de parsing
 ├── index.html         # Página estática principal
-├── testePOST.html     # Formulário de teste para requisições POST
-├── Makefile           # Script de automação de compilação
+├── testePOST.html     # Formulário web para teste interativo de submissão POST
+├── Makefile           # Automação de compilação modular (make / make run)
 └── LICENSE            # Licença MIT
 ```
 
@@ -44,13 +44,26 @@ make
 ### Execução
 ```bash
 ./servidor
+# Ou diretamente via make:
+make run
 ```
 
-O servidor iniciará na porta `8080`. Para testar:
-* Via navegador: `http://localhost:8080` ou `http://[::1]:8080`
-* Via cURL:
+O servidor escuta na porta `8080`.
+
+### Testes
+
+#### 1. Requisição GET
+* **Via Navegador:** `http://localhost:8080` ou `http://[::1]:8080`
+* **Via cURL:**
   ```bash
   curl -i http://localhost:8080/
+  ```
+
+#### 2. Requisição POST
+* **Via Navegador:** Abra `http://localhost:8080/testePOST.html` e envie o formulário.
+* **Via cURL:**
+  ```bash
+  curl -i -X POST -d "mensagem=OlaServidor" http://localhost:8080/enviar-dados
   ```
 
 ---

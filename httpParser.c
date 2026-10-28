@@ -88,7 +88,7 @@ void enviar_arquivo_generico(int socket_cliente, char *arquivo) {
     FILE *f = fopen(arquivo, "rb"); // rb para Unix não corromper outros tipos
     if (f == NULL) {
         perror("Erro ao abrir arquivo");
-        char *erro = "HTTP://1.1 404 Not Found\r\nContent-Type: text-html\r\n\r\n<h1>404 - Nao encontrado</h1>";
+        char *erro = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n<h1>404 - Nao encontrado</h1>";
         send(socket_cliente, erro, strlen(erro), 0);
         return;
     }
